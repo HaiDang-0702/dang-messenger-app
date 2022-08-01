@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/dang-messenger-app/static/css/main.da4ff25a.css",
+    "main.js": "/dang-messenger-app/static/js/main.6d496535.js",
+    "static/js/787.28cb0dcd.chunk.js": "/dang-messenger-app/static/js/787.28cb0dcd.chunk.js",
+    "static/media/logo.svg": "/dang-messenger-app/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/dang-messenger-app/index.html",
+    "main.da4ff25a.css.map": "/dang-messenger-app/static/css/main.da4ff25a.css.map",
+    "main.6d496535.js.map": "/dang-messenger-app/static/js/main.6d496535.js.map",
+    "787.28cb0dcd.chunk.js.map": "/dang-messenger-app/static/js/787.28cb0dcd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.da4ff25a.css",
+    "static/js/main.6d496535.js"
+  ]
+}
