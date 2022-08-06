@@ -1,7 +1,6 @@
 import { Avatar, Button, Typography } from 'antd'
 import React from 'react'
 import styled from 'styled-components'
-import { auth, db } from '../../firebase/config';
 import { AuthContext } from '../../Context/AuthProvider';
 
 const WrapperStyled = styled.div`
@@ -31,7 +30,7 @@ export default function UserInfo() {
           </Avatar>
           <Typography.Text className='username'>{displayName}</Typography.Text>
         </div>
-        <Button ghost onClick={() => auth.signOut()}>Đăng xuất</Button>
+        {/*<Button ghost onClick={() => auth.signOut()}>Đăng xuất</Button>*/}
       </WrapperStyled>
     </div>
   )

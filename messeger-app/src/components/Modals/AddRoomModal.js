@@ -1,20 +1,22 @@
 import { Form, Input, Modal } from 'antd'
 import React, { useContext } from 'react'
-import { AppContext } from '../../Context/AppProvider';
 import { AuthContext } from '../../Context/AuthProvider';
-import { addDocument } from '../../firebase/services';
+import { rooms } from "../../Context/Data";
+import { uid } from 'uid';
 
 export default function AddRoomModal() {
-    const {isAddRoomVisible, setIsAddRoomVisible} = useContext(AppContext);
-    const { user: {uid} } = useContext(AuthContext);
+    const { isAddRoomVisible, setIsAddRoomVisible } = useContext(AuthContext);
 
     const [form] = Form.useForm();
     const handleOk = () =>{
         //handle logic
         //add new room to firestore
-        console.log({ formData: form.getFieldsValue() });
-        debugger;
-        addDocument('rooms', {...form.getFieldValue(), members: [uid]})
+        const { description, name} = form.getFieldsValue();
+        rooms.push({
+            name,
+            description,
+            id: uid(),
+        })
 
         //reset form value
         form.resetFields();

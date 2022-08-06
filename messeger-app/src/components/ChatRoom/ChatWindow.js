@@ -2,11 +2,9 @@ import { UserAddOutlined } from '@ant-design/icons';
 import { Alert, Avatar, Button, Form, Input, Tooltip } from 'antd';
 import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
-import { AppContext } from '../../Context/AppProvider';
 import { AuthContext } from '../../Context/AuthProvider';
-import { addDocument } from '../../firebase/services';
-import useFirestore from '../../hooks/useFirestore';
 import Message from './Message';
+import { uid } from "uid";
 
 
 const HeaderStyled = styled.div`
@@ -74,13 +72,8 @@ const MessageListStyled = styled.div`
   overflow: auto;
 `;
 
-
-
 export default function ChatWindow() {
-  const { selectedRoom, members, setIsInviteMemberVisible } = useContext(AppContext);
-  const { user: {
-    uid, photoURL, displayName
-  } } = useContext(AuthContext)
+  const { user, selectedRoom, members, setIsInviteMemberVisible, messages, setMessages } = useContext(AuthContext);
   const [inputValue, setInPutValue] = useState('');
   const [form] = Form.useForm()
 
@@ -88,25 +81,24 @@ export default function ChatWindow() {
     setInPutValue(e.target.value);
   };
 
-  const handleOnSumit = () => {
-    addDocument('messages', {
-      text: inputValue,
-      uid,
-      photoURL,
-      roomId: selectedRoom.id,
-      displayName,
-    });
+  const handleOnSubmit = () => {
+      setMessages([...messages, {
+          text: inputValue,
+          key: uid(),
+          photoURL: user.photoURL,
+          displayName: user.displayName,
+          id: user.uid,
+          roomId: selectedRoom.id,
+
+      }])
     form.resetFields(['message'])
   };
 
-  const condition = React.useMemo(() => ({
-    fieldName: 'roomId',
-    operator: '==',
-    compareValue: selectedRoom.id
-  }), [selectedRoom.id])
-  const messages = useFirestore('messages', condition)
+    const roomMessages = messages.filter(message => {
+        return message.roomId === selectedRoom.id;
+    })
 
-  console.log({ messages })
+
   return (
     <WrapperStyled>
       {
@@ -118,7 +110,7 @@ export default function ChatWindow() {
             </div>
             <div>
               <ButtonGroupStyled>
-                <Button icon={<UserAddOutlined />} type='text' onClick={() => setIsInviteMemberVisible(true)}>Mời</Button>
+                {/*<Button icon={<UserAddOutlined />} type='text' onClick={() => setIsInviteMemberVisible(true)}>Mời</Button>*/}
                 <Avatar.Group size='small' maxCount={2}>
                   {
                     members.map((member) => (
@@ -137,9 +129,9 @@ export default function ChatWindow() {
             <ContentStyled>
               <MessageListStyled>
                 {
-                  messages.map((mes) => (
+                    roomMessages.map((mes) => (
                     <Message
-                      key={mes.id}
+                      key={mes.key}
                       text={mes.text}
                       photoURL={mes.photoURL}
                       displayName={mes.displayName}
@@ -152,12 +144,12 @@ export default function ChatWindow() {
                 <Form.Item name='message'>
                   <Input
                     onChange={handleInputChange}
-                    onPressEnter={handleOnSumit}
+                    onPressEnter={handleOnSubmit}
                     placeholder='Nhập tin nhắn...'
                     bordered={false}
                     autoComplete='off' />
                 </Form.Item>
-                <Button type='primary' onClick={handleOnSumit}>Gửi</Button>
+                <Button type='primary' onClick={handleOnSubmit}>Gửi</Button>
               </FormStyled>
             </ContentStyled></>
         ) : (
