@@ -14,34 +14,35 @@ const WrapperStyled = styled.div`
     .date{
         margin-left: 10px;
         font-size: 11px;
-        color: #a7a7a7;    
+        color: #a7a7a7
     }
 
     .content{
-        margin-left: 30px
+        margin-left: 30px;
     }
 `;
 
-function formatDate(seconds) {
-    let formattedDate = '';
+function formatDate(seconds){
+    let formattedDate='';
 
     if (seconds) {
         formattedDate = formatRelative(new Date(seconds * 1000), new Date());
 
         formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
     }
+
     return formattedDate;
 }
 
-export default function Message({text, displayName, createdAt, photoURL }) {
+export default function Message({text, displayName, createAt, photoURL}) {
   return (
     <WrapperStyled>
         <div>
-            <Avatar size='small' src={photoURL}>
+            <Avatar size ='small' src={photoURL}>
                 {photoURL ? '' : displayName?.charAt(0)?.toUpperCase()}
             </Avatar>
             <Typography.Text className='author'>{displayName}</Typography.Text>
-            <Typography.Text className='date'>{formatDate(createdAt?.seconds)}</Typography.Text>
+            <Typography.Text className='date'>{formatDate(createAt?.seconds)}</Typography.Text>
         </div>
         <div>
             <Typography.Text className='content'>{text}</Typography.Text>
@@ -49,4 +50,3 @@ export default function Message({text, displayName, createdAt, photoURL }) {
     </WrapperStyled>
   )
 }
-

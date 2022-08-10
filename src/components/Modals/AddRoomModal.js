@@ -1,34 +1,35 @@
 import { Form, Input, Modal } from 'antd'
 import React, { useContext } from 'react'
-import { AppContext } from '../../Context/AppProvider';
 import { AuthContext } from '../../Context/AuthProvider';
-import { addDocument } from '../../firebase/services';
+import { rooms } from "../../Context/Data";
+import { uid } from 'uid';
 
 export default function AddRoomModal() {
-    const {isAddRoomVisible, setIsAddRoomVisible} = useContext(AppContext);
-    const { user: {uid}} = useContext(AuthContext);
+    const { isAddRoomVisible, setIsAddRoomVisible } = useContext(AuthContext);
 
-    
     const [form] = Form.useForm();
-
-    const handleOk = () => {
+    const handleOk = () =>{
         //handle logic
-        //add new room to firestore 
-        //console.log({ formData : form.getFieldsValue()});
-        addDocument('rooms', {...form.getFieldsValue(), members:[uid]})
+        //add new room to firestore
+        const { description, name} = form.getFieldsValue();
+        rooms.push({
+            name,
+            description,
+            id: uid(),
+        })
 
         //reset form value
         form.resetFields();
 
 
         setIsAddRoomVisible(false);
+
     }
 
     const handleCancel = () => {
         setIsAddRoomVisible(false);
-         //reset form value
-         form.resetFields();
-
+        //reset form value
+        form.resetFields();
     }
   return (
     <div>
@@ -40,17 +41,13 @@ export default function AddRoomModal() {
         >
             <Form form={form} layout='vertical'>
                 <Form.Item label='Tên phòng' name='name'>
-                    <Input placeholder='Nhập tên phòng'/>
+                    <Input placeholder='Nhập tên phòng'/>    
                 </Form.Item>
                 <Form.Item label='Mô tả' name='description'>
-                    <Input.TextArea placeholder='Nhập mô tả'/>
+                    <Input.TextArea placeholder='Nhập mô tả'/>    
                 </Form.Item>
             </Form>
-        </Modal>
+        </Modal>    
     </div>
   )
 }
-
-
-
-
