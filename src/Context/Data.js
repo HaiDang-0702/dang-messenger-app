@@ -1,5 +1,12 @@
 import {uid} from "uid";
 
+export const bot = {
+        displayName: "bot",
+        email: "",
+        uid: uid(),
+        photoURL:   "https://joeschmoe.io/api/v1/jon",
+    };
+
 export const users = [
     {
         displayName: "huy",

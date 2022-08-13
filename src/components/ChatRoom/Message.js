@@ -5,6 +5,7 @@ import { formatRelative } from 'date-fns/esm';
 
 const WrapperStyled = styled.div`
     margin-bottom: 10px;
+    align-self: ${props => props.aligned || "flex-start"};
 
     .author{
         margin-left: 5px;
@@ -34,9 +35,10 @@ function formatDate(seconds){
     return formattedDate;
 }
 
-export default function Message({text, displayName, createAt, photoURL}) {
+export default function Message({text, displayName, createAt, photoURL, isBot}) {
+    const aligned = (isBot)? "flex-start": "flex-end";
   return (
-    <WrapperStyled>
+    <WrapperStyled aligned={aligned}>
         <div>
             <Avatar size ='small' src={photoURL}>
                 {photoURL ? '' : displayName?.charAt(0)?.toUpperCase()}
